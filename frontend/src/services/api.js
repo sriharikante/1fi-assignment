@@ -1,7 +1,6 @@
 // Thin wrapper around fetch for talking to the backend API.
 // Every product used on screen comes from these calls — nothing is hardcoded.
-
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
+const API_URL = import.meta.env.VITE_API_URL || "/api";
 
 class ApiError extends Error {
   constructor(message, status) {
