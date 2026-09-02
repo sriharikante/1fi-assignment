@@ -47,7 +47,7 @@ app.use("/api/products", productRoutes);
 app.use(express.static(frontendDistPath));
 
 // React Router fallback
-app.get("*", (req, res) => {
+app.get("/{*splat}", (req, res) => {
   res.sendFile(path.join(frontendDistPath, "index.html"));
 });
 
