@@ -1,314 +1,830 @@
-# 1Fi Marketplace — EMI Product Marketplace
+# 1Fi Marketplace — Smartphone EMI Marketplace
 
-A full-stack EMI product marketplace (in the spirit of Snapmint) where customers can browse
-smartphones, pick a color/storage variant, compare EMI plans, and check out on a monthly
-payment plan. All product, pricing, and EMI data is served dynamically from PostgreSQL through
-a REST API — nothing is hardcoded in the frontend.
+A full-stack smartphone marketplace built for the **1Fi SDE-1 Assignment**.
 
-## Overview
+The application allows users to browse smartphones, select color and storage variants, view pricing, compare EMI plans, select an EMI option, and complete a demo confirmation flow.
 
-- Browse a catalog of smartphones with live pricing and discounts
-- View a product page with a color/storage variant selector that updates price and image
-- Compare multiple EMI plans (tenure, interest rate, monthly payment, cashback)
-- Select a plan and walk through a confirmation flow (no real payment gateway)
-- Fully responsive across mobile, tablet, and desktop
+All product, variant, pricing, and EMI information is retrieved dynamically from a PostgreSQL database through REST APIs. No product catalog data is hardcoded in the frontend.
+
+---
+
+## Live Demo
+
+**Frontend:** `TODO — add deployed URL`
+
+**Backend API:** `TODO — add deployed API URL`
+
+**Demo Video:** `TODO — add Google Drive or YouTube URL`
+
+---
+
+## Assignment Requirements
+
+The application implements the core requirements of the 1Fi assignment:
+
+* Dynamic smartphone product catalog
+* Product name, variant, MRP, price, and product image
+* Multiple EMI plans
+* Monthly payment amount
+* EMI tenure
+* Interest rate
+* Cashback information
+* Selectable EMI plans
+* Proceed/confirmation flow
+* Backend REST APIs
+* PostgreSQL database
+* Prisma ORM
+* Unique product URLs
+* At least 3 products
+* Multiple variants for each product
+* Responsive user interface
+* Database schema and seed data
+
+---
 
 ## Features
 
-- Product listing page with cards (image, name, price, MRP, discount)
-- Product detail page with gallery, variant selection, and EMI plans
-- Dynamic variant pricing — selecting a color/storage combination fetches the matching
-  variant's price, image, and stock from the API response (not hardcoded logic)
-- EMI plan cards showing monthly payment, tenure, interest rate, and cashback
-- Single-select EMI plan with a clear selected state; Proceed is disabled until a plan is chosen
-- Confirmation modal summarizing the order, followed by a success state
-- Loading skeletons, error states with retry, and a dedicated "product not found" page
-- Slug-based routing (`/products/:slug`) resolved entirely from the backend
+### Product Catalog
 
-## Tech stack
+* Browse a dynamically loaded smartphone catalog
+* Product cards display:
 
-**Frontend:** React 19, Vite, Tailwind CSS v4, React Router
-**Backend:** Node.js, Express
-**Database:** PostgreSQL, Prisma ORM
+  * Product image
+  * Product name
+  * Brand
+  * MRP
+  * Selling price
+  * Discount
+  * EMI information
+  * Cashback information
+
+### Product Details
+
+Each product has a unique URL:
+
+```text
+/products/iphone-17-pro
+/products/samsung-s24-ultra
+/products/google-pixel-9-pro
+/products/oneplus-13
+```
+
+The product page dynamically loads its data from the backend API.
+
+### Product Variants
+
+Users can select different:
+
+* Colors
+* Storage capacities
+
+Selecting a variant updates the displayed:
+
+* Product image
+* Price
+* Stock information
+
+### EMI Plans
+
+Each product contains multiple EMI plans displaying:
+
+* Monthly payment
+* Tenure in months
+* Interest rate
+* Cashback
+
+Only one EMI plan can be selected at a time.
+
+The Proceed button remains disabled until an EMI plan is selected.
+
+### Confirmation Flow
+
+After selecting a product variant and EMI plan:
+
+1. User clicks Proceed
+2. Confirmation modal appears
+3. Selected product and EMI information is displayed
+4. User confirms the selection
+5. Success state is shown
+
+This is a demonstration flow and does not process real payments.
+
+### User Experience
+
+* Responsive design
+* Loading skeletons
+* Error states
+* Retry functionality
+* Product-not-found page
+* Responsive product grid
+* Interactive variant selection
+* Interactive EMI selection
+* Smooth hover and transition effects
+
+---
+
+## Products
+
+The seeded database currently contains four smartphone products:
+
+| Product                  | Slug                 | Variants |
+| ------------------------ | -------------------- | -------: |
+| Apple iPhone 17 Pro      | `iphone-17-pro`      |        3 |
+| Samsung Galaxy S24 Ultra | `samsung-s24-ultra`  |        3 |
+| Google Pixel 9 Pro       | `google-pixel-9-pro` |        3 |
+| OnePlus 13               | `oneplus-13`         |        3 |
+
+Each product has multiple color/storage combinations stored in the database.
+
+---
+
+## Tech Stack
+
+### Frontend
+
+* React 19
+* Vite
+* Tailwind CSS
+* React Router
+* JavaScript / JSX
+
+### Backend
+
+* Node.js
+* Express.js
+* REST APIs
+* CORS
+
+### Database
+
+* PostgreSQL
+* Prisma ORM
+
+### Development Tools
+
+* Git
+* GitHub
+* Postman / REST API testing
+* Render
+* Vercel or Render for deployment
+
+---
 
 ## Architecture
 
-```
-React (Vite)
-     │  fetch()
-     ▼
-Express REST API
-     │
-     ▼
-Prisma Client
-     │
-     ▼
-PostgreSQL
+```text
+                    User / Browser
+                         │
+                         ▼
+              ┌─────────────────────┐
+              │ React + Vite        │
+              │ Frontend            │
+              └──────────┬──────────┘
+                         │
+                    REST API
+                         │
+                         ▼
+              ┌─────────────────────┐
+              │ Express.js Backend  │
+              │ REST API            │
+              └──────────┬──────────┘
+                         │
+                       Prisma
+                         │
+                         ▼
+              ┌─────────────────────┐
+              │ PostgreSQL          │
+              │ Product Data        │
+              │ Variants            │
+              │ EMI Plans           │
+              └─────────────────────┘
 ```
 
-The frontend never talks to the database directly. Every screen is populated by calling the
-Express API, which uses Prisma to query PostgreSQL and returns JSON.
+The frontend never connects directly to PostgreSQL.
 
-## Folder structure
+All product and EMI data is requested through the Express backend API.
 
-```
-1fi-emi-assignment/
+---
+
+## Project Structure
+
+```text
+1fi-assignment/
+│
 ├── frontend/
+│   ├── public/
+│   │   ├── products/
+│   │   ├── favicon.svg
+│   │   └── icons.svg
+│   │
 │   ├── src/
-│   │   ├── components/       # Navbar, ProductCard, EmiPlanCard, VariantSelector, modals, states
-│   │   ├── pages/             # HomePage, ProductPage, NotFoundPage
-│   │   ├── services/          # api.js — fetch wrapper around the backend
-│   │   ├── utils/              # formatting helpers (currency, discount %)
+│   │   ├── components/
+│   │   │   ├── ConfirmationModal.jsx
+│   │   │   ├── EmiPlanCard.jsx
+│   │   │   ├── ErrorState.jsx
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── ProductCard.jsx
+│   │   │   ├── ProductCardSkeleton.jsx
+│   │   │   └── VariantSelector.jsx
+│   │   │
+│   │   ├── pages/
+│   │   │   ├── HomePage.jsx
+│   │   │   ├── ProductPage.jsx
+│   │   │   └── NotFoundPage.jsx
+│   │   │
+│   │   ├── services/
+│   │   │   └── api.js
+│   │   │
+│   │   ├── utils/
+│   │   │   └── format.js
+│   │   │
 │   │   ├── App.jsx
+│   │   ├── index.css
 │   │   └── main.jsx
+│   │
 │   ├── .env.example
-│   └── vercel.json
+│   ├── vercel.json
+│   ├── vite.config.js
+│   └── package.json
+│
 ├── backend/
 │   ├── prisma/
-│   │   ├── schema.prisma
 │   │   ├── migrations/
+│   │   ├── schema.prisma
 │   │   ├── seed.js
 │   │   └── seedData.js
+│   │
 │   ├── src/
-│   │   ├── controllers/       # productController.js
-│   │   ├── routes/            # productRoutes.js
-│   │   ├── services/          # prismaClient.js, productService.js (query layer)
-│   │   ├── middleware/        # errorHandler.js
+│   │   ├── controllers/
+│   │   │   └── productController.js
+│   │   ├── middleware/
+│   │   │   └── errorHandler.js
+│   │   ├── routes/
+│   │   │   └── productRoutes.js
+│   │   ├── services/
+│   │   │   ├── prismaClient.js
+│   │   │   └── productService.js
 │   │   └── server.js
-│   └── .env.example
-├── README.md
-└── .gitignore
+│   │
+│   ├── .env.example
+│   └── package.json
+│
+├── .gitignore
+├── IMAGE_SETUP.md
+└── README.md
 ```
 
-## Database schema
+---
 
-**Product**
-| Field | Type | Notes |
-|---|---|---|
-| id | String (UUID) | Primary key |
-| name | String | |
-| slug | String | Unique, used in the product URL |
-| description | String | |
-| brand | String | Indexed |
-| mrp | Decimal(10,2) | |
-| basePrice | Decimal(10,2) | |
-| createdAt / updatedAt | DateTime | |
+# Database Schema
 
-**Variant**
-| Field | Type | Notes |
-|---|---|---|
-| id | String (UUID) | Primary key |
-| productId | String | Foreign key → Product, `ON DELETE CASCADE` |
-| color | String | |
-| storage | String | |
-| imageUrl | String | |
-| price | Decimal(10,2) | |
-| stock | Int | |
+The database contains three main models.
 
-Unique constraint on `(productId, color, storage)` — a product can't have two variants with
-the same color/storage combination.
+## Product
 
-**EmiPlan**
-| Field | Type | Notes |
-|---|---|---|
-| id | String (UUID) | Primary key |
-| productId | String | Foreign key → Product, `ON DELETE CASCADE` |
-| tenureMonths | Int | |
-| interestRate | Decimal(5,2) | |
-| monthlyPayment | Decimal(10,2) | |
-| cashback | Decimal(10,2) | |
-| isActive | Boolean | |
+| Field         | Type     | Description             |
+| ------------- | -------- | ----------------------- |
+| `id`          | UUID     | Primary key             |
+| `name`        | String   | Product name            |
+| `slug`        | String   | Unique product URL slug |
+| `description` | String   | Product description     |
+| `brand`       | String   | Product brand           |
+| `mrp`         | Decimal  | Maximum retail price    |
+| `basePrice`   | Decimal  | Base selling price      |
+| `createdAt`   | DateTime | Creation timestamp      |
+| `updatedAt`   | DateTime | Last update timestamp   |
 
-Unique constraint on `(productId, tenureMonths)`.
+## Variant
 
-### Relationships
+| Field       | Type    | Description         |
+| ----------- | ------- | ------------------- |
+| `id`        | UUID    | Primary key         |
+| `productId` | String  | Product foreign key |
+| `color`     | String  | Variant color       |
+| `storage`   | String  | Storage capacity    |
+| `imageUrl`  | String  | Variant image       |
+| `price`     | Decimal | Variant price       |
+| `stock`     | Int     | Available stock     |
 
-- `Product 1 — N Variant`
-- `Product 1 — N EmiPlan`
+A unique constraint is applied to:
 
-Both child tables cascade on delete, so removing a product cleans up its variants and EMI
-plans automatically.
+```text
+(productId, color, storage)
+```
 
-## API endpoints
+This prevents duplicate color/storage combinations for the same product.
 
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/api/products` | List all products (id, name, slug, brand, mrp, basePrice, imageUrl) |
-| GET | `/api/products/:slug` | Full product detail: variants + active EMI plans |
-| GET | `/api/products/:id/variants` | All variants for a product (by id) |
-| GET | `/api/products/:id/emi-plans` | All active EMI plans for a product (by id) |
-| GET | `/health` | Health check |
+## EmiPlan
 
-All endpoints return `{ success: boolean, data | message }` and use standard status codes
-(`200`, `404` for missing products/routes, `500` for unexpected errors).
+| Field            | Type    | Description                |
+| ---------------- | ------- | -------------------------- |
+| `id`             | UUID    | Primary key                |
+| `productId`      | String  | Product foreign key        |
+| `tenureMonths`   | Int     | EMI tenure                 |
+| `interestRate`   | Decimal | Interest rate              |
+| `monthlyPayment` | Decimal | Monthly EMI                |
+| `cashback`       | Decimal | Cashback amount            |
+| `isActive`       | Boolean | Whether the plan is active |
 
-### Example: `GET /api/products`
+A unique constraint is applied to:
+
+```text
+(productId, tenureMonths)
+```
+
+---
+
+## Database Relationships
+
+```text
+Product
+   │
+   ├───────────────┐
+   │               │
+   ▼               ▼
+Variant         EmiPlan
+
+Product 1 ──── N Variant
+Product 1 ──── N EmiPlan
+```
+
+Both related tables use cascading deletes.
+
+---
+
+# API Endpoints
+
+## Get All Products
+
+```http
+GET /api/products
+```
+
+Returns all products available in the catalog.
+
+Example:
 
 ```json
 {
   "success": true,
   "data": [
     {
-      "id": "f345f38e-11a7-4cbf-b4b3-9760f2d89865",
+      "id": "product-id",
       "name": "Apple iPhone 17 Pro",
       "slug": "iphone-17-pro",
       "brand": "Apple",
       "mrp": "149900.00",
       "basePrice": "134900.00",
-      "imageUrl": "https://images.unsplash.com/photo-1592286927505-1def25115481?w=800&q=80"
+      "imageUrl": "/products/iphone-17-pro-natural-titanium.svg"
     }
   ]
 }
 ```
 
-### Example: `GET /api/products/iphone-17-pro`
+---
+
+## Get Product by Slug
+
+```http
+GET /api/products/:slug
+```
+
+Example:
+
+```http
+GET /api/products/iphone-17-pro
+```
+
+Returns:
+
+* Product information
+* Variants
+* Prices
+* Images
+* Stock
+* Active EMI plans
+
+Example response:
 
 ```json
 {
   "success": true,
   "data": {
-    "id": "f345f38e-11a7-4cbf-b4b3-9760f2d89865",
     "name": "Apple iPhone 17 Pro",
     "slug": "iphone-17-pro",
-    "description": "...",
     "brand": "Apple",
     "mrp": "149900.00",
     "basePrice": "134900.00",
     "variants": [
-      { "id": "...", "color": "Natural Titanium", "storage": "256GB", "imageUrl": "...", "price": "134900.00", "stock": 25 }
+      {
+        "color": "Natural Titanium",
+        "storage": "256GB",
+        "imageUrl": "/products/iphone-17-pro-natural-titanium.svg",
+        "price": "134900.00",
+        "stock": 25
+      }
     ],
     "emiPlans": [
-      { "id": "...", "tenureMonths": 3, "interestRate": "0.00", "monthlyPayment": "44967.00", "cashback": "2000.00", "isActive": true }
+      {
+        "tenureMonths": 3,
+        "interestRate": "0.00",
+        "monthlyPayment": "44967.00",
+        "cashback": "2000.00",
+        "isActive": true
+      }
     ]
   }
 }
 ```
 
-### Example: `404` response
+---
+
+## Get Product Variants
+
+```http
+GET /api/products/:id/variants
+```
+
+Returns all variants for a product.
+
+---
+
+## Get EMI Plans
+
+```http
+GET /api/products/:id/emi-plans
+```
+
+Returns all active EMI plans for a product.
+
+---
+
+## Health Check
+
+```http
+GET /health
+```
+
+Example:
 
 ```json
-{ "success": false, "message": "No product found with slug \"not-a-real-product\"" }
+{
+  "success": true,
+  "message": "API is healthy"
+}
 ```
 
-## Environment variables
+---
 
-**backend/.env**
+## Error Handling
+
+The API uses standard HTTP status codes:
+
+```text
+200 → Successful request
+404 → Product or route not found
+500 → Unexpected server error
 ```
+
+Example:
+
+```json
+{
+  "success": false,
+  "message": "No product found with slug \"invalid-product\""
+}
+```
+
+---
+
+# Environment Variables
+
+## Backend
+
+Create:
+
+```text
+backend/.env
+```
+
+Example:
+
+```env
 DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE_NAME?schema=public"
-PORT=5000
+PORT=4000
 CORS_ORIGIN="http://localhost:5173"
 ```
 
-**frontend/.env**
+## Frontend
+
+Create:
+
+```text
+frontend/.env
 ```
-VITE_API_URL=http://localhost:5000/api
+
+Example:
+
+```env
+VITE_API_URL=http://localhost:4000/api
 ```
 
-`.env.example` files are provided in both `frontend/` and `backend/`. Never commit a real
-`.env` file — it's already covered by `.gitignore`.
+### Security
 
-## Local development
+Real `.env` files must never be committed to GitHub.
 
-### 1. PostgreSQL setup
+Only `.env.example` files are included in the repository.
 
-Install PostgreSQL locally (or use a hosted instance), then create a database:
+---
+
+# Local Development
+
+## 1. Clone the Repository
 
 ```bash
-createdb emi_marketplace
-# or, from psql:
-# CREATE DATABASE emi_marketplace;
+git clone https://github.com/sriharikante/1fi-assignment.git
+cd 1fi-assignment
 ```
 
-### 2. Backend setup
+---
+
+## 2. Backend Setup
 
 ```bash
 cd backend
-cp .env.example .env
-# edit .env with your DATABASE_URL
-
 npm install
-npm run prisma:generate     # generate the Prisma Client
-npm run prisma:migrate      # create & apply the migration (prompts for a name on first run)
-npm run seed                # seed 4 products, variants, and EMI plans
-npm run dev                 # starts the API on http://localhost:5000
 ```
 
-Verify it's working: `curl http://localhost:5000/api/products` should return the 4 seeded
-phones.
+Create the environment file:
 
-### 3. Frontend setup
+```bash
+cp .env.example .env
+```
+
+Add your PostgreSQL connection string to `.env`.
+
+Generate Prisma Client:
+
+```bash
+npm run prisma:generate
+```
+
+Apply database migrations:
+
+```bash
+npm run prisma:migrate
+```
+
+Seed the database:
+
+```bash
+npm run seed
+```
+
+Start the backend:
+
+```bash
+npm run dev
+```
+
+The API runs on:
+
+```text
+http://localhost:4000
+```
+
+Test:
+
+```text
+http://localhost:4000/health
+```
+
+or:
+
+```text
+http://localhost:4000/api/products
+```
+
+---
+
+## 3. Frontend Setup
+
+Open another terminal:
 
 ```bash
 cd frontend
-cp .env.example .env
-# edit .env if your API runs on a different URL
-
 npm install
-npm run dev                 # starts the app on http://localhost:5173
 ```
 
-Open `http://localhost:5173` — you should see the product grid, and clicking a product should
-take you to `/products/<slug>` with live variant and EMI data.
+Create:
 
-### Production build (frontend)
+```text
+frontend/.env
+```
+
+Add:
+
+```env
+VITE_API_URL=http://localhost:4000/api
+```
+
+Start the frontend:
 
 ```bash
-cd frontend
-npm run build      # outputs to frontend/dist
-npm run preview    # serve the production build locally to sanity-check it
+npm run dev
 ```
 
-## Deployment
+Open:
 
-**Frontend → Vercel**
-1. Import the `frontend/` folder as the project root.
-2. Build command: `npm run build`, output directory: `dist`.
-3. Set the `VITE_API_URL` environment variable to your deployed backend's URL (e.g.
-   `https://your-backend.onrender.com/api`).
-4. `frontend/vercel.json` already rewrites all routes to `index.html`, so refreshing on
-   `/products/iphone-17-pro` won't 404.
+```text
+http://localhost:5173
+```
 
-**Backend → Render**
-1. Create a new Web Service pointing at the `backend/` folder.
-2. Build command: `npm install && npm run prisma:generate`
-3. Start command: `npm run prisma:deploy && npm start` (runs pending migrations, then boots
-   the server) — or run `prisma migrate deploy` as a separate Render "release" step if you
-   prefer to keep it out of the start command.
-4. Set environment variables: `DATABASE_URL`, `PORT` (Render sets this automatically, but the
-   app also respects `process.env.PORT`), `CORS_ORIGIN` (your Vercel frontend URL).
+---
 
-**Database → hosted PostgreSQL**
-Use Render's managed PostgreSQL, Supabase, Neon, or any PostgreSQL provider. Copy the
-connection string into `DATABASE_URL` on the backend service, then run
-`npm run prisma:deploy` once against it before (or as part of) your first deploy.
+# Production Build
 
-## Future improvements
+From the frontend directory:
 
-- Pagination and search/filtering on the product listing page
-- Authentication so a customer can view their EMI order history
-- A real payment/checkout integration (currently a demo confirmation flow only)
-- Admin endpoints for managing products, variants, and EMI plans
-- Automated tests (API integration tests, component tests for variant/EMI selection logic)
-- Image upload/storage instead of external image URLs
+```bash
+npm run build
+```
 
-## A note on this build environment
+The production build is generated in:
 
-This project was built and tested inside a sandboxed tool environment whose network egress is
-restricted to a specific allowlist of domains (npm, GitHub, PyPI, Ubuntu package mirrors,
-etc.). That allowlist does not include `binaries.prisma.sh`, the CDN Prisma's CLI downloads
-its Rust query/schema engine binaries from. Because of that, `npx prisma generate` and
-`npx prisma migrate dev` could not be executed inside this specific sandbox.
+```text
+frontend/dist
+```
 
-This does **not** affect the code you're getting — `prisma/schema.prisma`,
-`prisma/migrations/20260902130000_init/migration.sql`, and `prisma/seed.js` are all standard,
-correct Prisma ORM files, and `npm run prisma:generate` / `npm run prisma:migrate` /
-`npm run seed` will work normally on your machine, in CI, or on Render, since those
-environments can reach Prisma's CDN.
+To preview the production build:
 
-To still genuinely verify correctness inside this sandbox, the migration SQL was applied
-directly to a real local PostgreSQL instance via `psql`, the exact seed data was inserted, and
-every API endpoint (`/api/products`, `/api/products/:slug`, `/api/products/:id/variants`,
-`/api/products/:id/emi-plans`, valid and invalid slugs/ids, and unknown routes) was
-smoke-tested end-to-end against that live database and confirmed to return the expected data,
-status codes, and error shapes. The frontend was also run against that live API (`npm run
-dev`) and production-built (`npm run build`) successfully with no errors.
+```bash
+npm run preview
+```
+
+---
+
+# Deployment
+
+The application can be deployed using services such as Render and Vercel.
+
+## PostgreSQL
+
+The production database can be hosted using:
+
+* Render PostgreSQL
+* Supabase
+* Neon
+* Another PostgreSQL provider
+
+The database connection string is configured using:
+
+```text
+DATABASE_URL
+```
+
+---
+
+## Backend
+
+Deploy the Express backend as a Render Web Service.
+
+Backend environment variables:
+
+```text
+DATABASE_URL=<production PostgreSQL connection string>
+PORT=<Render provided port>
+CORS_ORIGIN=<deployed frontend URL>
+```
+
+Build command:
+
+```bash
+npm install && npm run prisma:generate
+```
+
+Start command:
+
+```bash
+npm run prisma:deploy && npm start
+```
+
+---
+
+## Frontend
+
+The Vite React frontend can be deployed using Vercel.
+
+Build command:
+
+```bash
+npm run build
+```
+
+Output directory:
+
+```text
+dist
+```
+
+Set:
+
+```env
+VITE_API_URL=<deployed backend API URL>/api
+```
+
+The frontend contains a route rewrite configuration so that direct navigation and refreshes on product URLs continue to work.
+
+---
+
+# GitHub Repository
+
+Source code:
+
+`https://github.com/sriharikante/1fi-assignment`
+
+The repository contains:
+
+* Frontend source code
+* Backend source code
+* Prisma schema
+* Prisma migrations
+* Seed data
+* API implementation
+* README
+* Product assets
+* Environment examples
+
+Sensitive environment files and generated dependencies are excluded using `.gitignore`.
+
+---
+
+# Testing Checklist
+
+Before submission, verify:
+
+* [x] Product catalog loads from backend API
+* [x] PostgreSQL database connected
+* [x] Prisma schema implemented
+* [x] Seed data implemented
+* [x] At least 3 products
+* [x] Multiple variants per product
+* [x] Unique product URLs
+* [x] Product image changes with variant
+* [x] Product price changes with variant
+* [x] EMI plans load dynamically
+* [x] EMI plan selection works
+* [x] Proceed button requires EMI selection
+* [x] Confirmation flow works
+* [x] Loading states implemented
+* [x] Error states implemented
+* [x] Product-not-found page implemented
+* [x] Responsive UI
+* [ ] Production deployment
+* [ ] Live demo URL added
+* [ ] Demo video added
+
+---
+
+# Future Improvements
+
+Possible improvements for a production version:
+
+* User authentication
+* Customer EMI order history
+* Search and filtering
+* Pagination
+* Real payment gateway integration
+* Admin product management
+* Automated API and frontend tests
+* Image storage using cloud object storage
+* Order management
+* EMI eligibility checks
+* Production monitoring and logging
+
+---
+
+# Assignment Deliverables
+
+### GitHub Repository
+
+`https://github.com/sriharikante/1fi-assignment`
+
+### Deployed Demo
+
+`TODO — add URL after deployment`
+
+### Demo Video
+
+`TODO — add Google Drive or YouTube URL after recording`
+
+The demo video should showcase:
+
+1. Product listing
+2. Product details
+3. Variant selection
+4. EMI plan selection
+5. Confirmation flow
+6. Backend API
+7. PostgreSQL database
+8. Overall application functionality
