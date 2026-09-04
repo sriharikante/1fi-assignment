@@ -19,9 +19,6 @@ https://onefi-mobiles.onrender.com/api/products
 **Health Check:**
 https://onefi-mobiles.onrender.com/health
 
-**Demo Video:**
-*Add Google Drive or YouTube link here after recording.*
-
 ---
 
 ## Assignment Requirements
