@@ -2,42 +2,48 @@
 
 A full-stack smartphone marketplace built for the **1Fi SDE-1 Assignment**.
 
-The application allows users to browse smartphones, select color and storage variants, view pricing, compare EMI plans, select an EMI option, and complete a demo confirmation flow.
+The application allows users to browse smartphones, select color and storage variants, view pricing, explore EMI plans, select an EMI option, and complete a demo confirmation flow.
 
-All product, variant, pricing, and EMI information is retrieved dynamically from a PostgreSQL database through REST APIs. No product catalog data is hardcoded in the frontend.
+All product, variant, pricing, and EMI plan information is loaded dynamically from a **PostgreSQL database through REST APIs**. No product catalog data is hardcoded in the frontend.
 
 ---
 
 ## Live Demo
 
-**Frontend:** `TODO — add deployed URL`
+**Application:**
+https://onefi-mobiles.onrender.com
 
-**Backend API:** `TODO — add deployed API URL`
+**Products API:**
+https://onefi-mobiles.onrender.com/api/products
 
-**Demo Video:** `TODO — add Google Drive or YouTube URL`
+**Health Check:**
+https://onefi-mobiles.onrender.com/health
+
+**Demo Video:**
+*Add Google Drive or YouTube link here after recording.*
 
 ---
 
 ## Assignment Requirements
 
-The application implements the core requirements of the 1Fi assignment:
+The application implements the core requirements of the 1Fi SDE-1 assignment:
 
 * Dynamic smartphone product catalog
 * Product name, variant, MRP, price, and product image
 * Multiple EMI plans
-* Monthly payment amount
+* Monthly EMI payment
 * EMI tenure
 * Interest rate
-* Cashback information
+* Cashback
 * Selectable EMI plans
-* Proceed/confirmation flow
+* Proceed and confirmation flow
 * Backend REST APIs
 * PostgreSQL database
 * Prisma ORM
 * Unique product URLs
 * At least 3 products
 * Multiple variants for each product
-* Responsive user interface
+* Responsive UI
 * Database schema and seed data
 
 ---
@@ -46,17 +52,18 @@ The application implements the core requirements of the 1Fi assignment:
 
 ### Product Catalog
 
-* Browse a dynamically loaded smartphone catalog
-* Product cards display:
+Users can browse a dynamically loaded smartphone catalog.
 
-  * Product image
-  * Product name
-  * Brand
-  * MRP
-  * Selling price
-  * Discount
-  * EMI information
-  * Cashback information
+Each product displays:
+
+* Product image
+* Product name
+* Brand
+* MRP
+* Selling price
+* Discount
+* EMI information
+* Cashback information
 
 ### Product Details
 
@@ -69,7 +76,7 @@ Each product has a unique URL:
 /products/oneplus-13
 ```
 
-The product page dynamically loads its data from the backend API.
+Product details are fetched from the backend using the product slug.
 
 ### Product Variants
 
@@ -78,34 +85,40 @@ Users can select different:
 * Colors
 * Storage capacities
 
-Selecting a variant updates the displayed:
+Changing a variant updates:
 
 * Product image
-* Price
+* Product price
 * Stock information
+* EMI amount
 
 ### EMI Plans
 
-Each product contains multiple EMI plans displaying:
+Each product has multiple EMI plans containing:
 
 * Monthly payment
-* Tenure in months
+* Tenure
 * Interest rate
 * Cashback
 
+The monthly EMI is calculated dynamically based on the selected variant price, interest rate, and tenure.
+
 Only one EMI plan can be selected at a time.
 
-The Proceed button remains disabled until an EMI plan is selected.
+The **Proceed** button becomes available after selecting an EMI plan.
 
 ### Confirmation Flow
 
 After selecting a product variant and EMI plan:
 
-1. User clicks Proceed
-2. Confirmation modal appears
-3. Selected product and EMI information is displayed
-4. User confirms the selection
-5. Success state is shown
+1. User selects a product.
+2. User selects a variant.
+3. User selects an EMI plan.
+4. User clicks **Proceed**.
+5. A confirmation modal is displayed.
+6. The selected product and EMI details are shown.
+7. User confirms the selection.
+8. A success state is displayed.
 
 This is a demonstration flow and does not process real payments.
 
@@ -119,13 +132,14 @@ This is a demonstration flow and does not process real payments.
 * Responsive product grid
 * Interactive variant selection
 * Interactive EMI selection
+* Confirmation modal
 * Smooth hover and transition effects
 
 ---
 
 ## Products
 
-The seeded database currently contains four smartphone products:
+The database currently contains four products, with three variants for each:
 
 | Product                  | Slug                 | Variants |
 | ------------------------ | -------------------- | -------: |
@@ -134,13 +148,13 @@ The seeded database currently contains four smartphone products:
 | Google Pixel 9 Pro       | `google-pixel-9-pro` |        3 |
 | OnePlus 13               | `oneplus-13`         |        3 |
 
-Each product has multiple color/storage combinations stored in the database.
+All variants are stored in PostgreSQL and include their own color, storage, image, price, and stock information.
 
 ---
 
-## Tech Stack
+# Tech Stack
 
-### Frontend
+## Frontend
 
 * React 19
 * Vite
@@ -148,74 +162,72 @@ Each product has multiple color/storage combinations stored in the database.
 * React Router
 * JavaScript / JSX
 
-### Backend
+## Backend
 
 * Node.js
 * Express.js
 * REST APIs
 * CORS
 
-### Database
+## Database
 
 * PostgreSQL
 * Prisma ORM
 
-### Development Tools
+## Deployment & Tools
 
 * Git
 * GitHub
-* Postman / REST API testing
 * Render
-* Vercel or Render for deployment
+* Postman / REST API testing
 
 ---
 
-## Architecture
+# Architecture
 
 ```text
-                    User / Browser
+                   User / Browser
                          │
                          ▼
-              ┌─────────────────────┐
-              │ React + Vite        │
-              │ Frontend            │
-              └──────────┬──────────┘
+                ┌─────────────────┐
+                │ React + Vite    │
+                │   Frontend      │
+                └────────┬────────┘
                          │
-                    REST API
+                      REST API
                          │
                          ▼
-              ┌─────────────────────┐
-              │ Express.js Backend  │
-              │ REST API            │
-              └──────────┬──────────┘
+                ┌─────────────────┐
+                │    Express.js   │
+                │     Backend     │
+                └────────┬────────┘
                          │
                        Prisma
                          │
                          ▼
-              ┌─────────────────────┐
-              │ PostgreSQL          │
-              │ Product Data        │
-              │ Variants            │
-              │ EMI Plans           │
-              └─────────────────────┘
+                ┌─────────────────┐
+                │   PostgreSQL    │
+                │                 │
+                │ Products        │
+                │ Variants        │
+                │ EMI Plans       │
+                └─────────────────┘
 ```
 
 The frontend never connects directly to PostgreSQL.
 
-All product and EMI data is requested through the Express backend API.
+All catalog and EMI information is requested through the Express backend API.
 
 ---
 
-## Project Structure
+# Project Structure
 
 ```text
 1fi-assignment/
 │
 ├── frontend/
 │   ├── public/
-│   │   ├── products/
-│   │   ├── favicon.svg
-│   │   └── icons.svg
+│   │   └── products/
 │   │
 │   ├── src/
 │   │   ├── components/
@@ -243,7 +255,6 @@ All product and EMI data is requested through the Express backend API.
 │   │   └── main.jsx
 │   │
 │   ├── .env.example
-│   ├── vercel.json
 │   ├── vite.config.js
 │   └── package.json
 │
@@ -271,6 +282,7 @@ All product and EMI data is requested through the Express backend API.
 │
 ├── .gitignore
 ├── IMAGE_SETUP.md
+├── package.json
 └── README.md
 ```
 
@@ -278,7 +290,7 @@ All product and EMI data is requested through the Express backend API.
 
 # Database Schema
 
-The database contains three main models.
+The application uses three main models.
 
 ## Product
 
@@ -306,7 +318,7 @@ The database contains three main models.
 | `price`     | Decimal | Variant price       |
 | `stock`     | Int     | Available stock     |
 
-A unique constraint is applied to:
+Unique constraint:
 
 ```text
 (productId, color, storage)
@@ -322,11 +334,11 @@ This prevents duplicate color/storage combinations for the same product.
 | `productId`      | String  | Product foreign key        |
 | `tenureMonths`   | Int     | EMI tenure                 |
 | `interestRate`   | Decimal | Interest rate              |
-| `monthlyPayment` | Decimal | Monthly EMI                |
+| `monthlyPayment` | Decimal | Stored EMI value           |
 | `cashback`       | Decimal | Cashback amount            |
 | `isActive`       | Boolean | Whether the plan is active |
 
-A unique constraint is applied to:
+Unique constraint:
 
 ```text
 (productId, tenureMonths)
@@ -334,7 +346,7 @@ A unique constraint is applied to:
 
 ---
 
-## Database Relationships
+# Database Relationships
 
 ```text
 Product
@@ -342,13 +354,13 @@ Product
    ├───────────────┐
    │               │
    ▼               ▼
-Variant         EmiPlan
+Variant          EmiPlan
 
 Product 1 ──── N Variant
 Product 1 ──── N EmiPlan
 ```
 
-Both related tables use cascading deletes.
+Both related models use cascading deletes.
 
 ---
 
@@ -375,7 +387,7 @@ Example:
       "brand": "Apple",
       "mrp": "149900.00",
       "basePrice": "134900.00",
-      "imageUrl": "/products/iphone-17-pro-natural-titanium.svg"
+      "imageUrl": "/products/iphone-17-pro-natural-titanium.png"
     }
   ]
 }
@@ -404,39 +416,6 @@ Returns:
 * Stock
 * Active EMI plans
 
-Example response:
-
-```json
-{
-  "success": true,
-  "data": {
-    "name": "Apple iPhone 17 Pro",
-    "slug": "iphone-17-pro",
-    "brand": "Apple",
-    "mrp": "149900.00",
-    "basePrice": "134900.00",
-    "variants": [
-      {
-        "color": "Natural Titanium",
-        "storage": "256GB",
-        "imageUrl": "/products/iphone-17-pro-natural-titanium.svg",
-        "price": "134900.00",
-        "stock": 25
-      }
-    ],
-    "emiPlans": [
-      {
-        "tenureMonths": 3,
-        "interestRate": "0.00",
-        "monthlyPayment": "44967.00",
-        "cashback": "2000.00",
-        "isActive": true
-      }
-    ]
-  }
-}
-```
-
 ---
 
 ## Get Product Variants
@@ -445,7 +424,7 @@ Example response:
 GET /api/products/:id/variants
 ```
 
-Returns all variants for a product.
+Returns all variants belonging to a product.
 
 ---
 
@@ -455,7 +434,7 @@ Returns all variants for a product.
 GET /api/products/:id/emi-plans
 ```
 
-Returns all active EMI plans for a product.
+Returns all active EMI plans belonging to a product.
 
 ---
 
@@ -465,7 +444,7 @@ Returns all active EMI plans for a product.
 GET /health
 ```
 
-Example:
+Example response:
 
 ```json
 {
@@ -476,7 +455,7 @@ Example:
 
 ---
 
-## Error Handling
+# Error Handling
 
 The API uses standard HTTP status codes:
 
@@ -512,7 +491,6 @@ Example:
 ```env
 DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE_NAME?schema=public"
 PORT=4000
-CORS_ORIGIN="http://localhost:5173"
 ```
 
 ## Frontend
@@ -539,14 +517,12 @@ Only `.env.example` files are included in the repository.
 
 # Local Development
 
-## 1. Clone the Repository
+## 1. Clone Repository
 
 ```bash
 git clone https://github.com/sriharikante/1fi-assignment.git
 cd 1fi-assignment
 ```
-
----
 
 ## 2. Backend Setup
 
@@ -555,13 +531,7 @@ cd backend
 npm install
 ```
 
-Create the environment file:
-
-```bash
-cp .env.example .env
-```
-
-Add your PostgreSQL connection string to `.env`.
+Create `backend/.env` and add your PostgreSQL connection string.
 
 Generate Prisma Client:
 
@@ -569,7 +539,7 @@ Generate Prisma Client:
 npm run prisma:generate
 ```
 
-Apply database migrations:
+Apply migrations:
 
 ```bash
 npm run prisma:migrate
@@ -587,13 +557,13 @@ Start the backend:
 npm run dev
 ```
 
-The API runs on:
+Backend:
 
 ```text
 http://localhost:4000
 ```
 
-Test:
+Test the API:
 
 ```text
 http://localhost:4000/health
@@ -616,13 +586,7 @@ cd frontend
 npm install
 ```
 
-Create:
-
-```text
-frontend/.env
-```
-
-Add:
+Create `frontend/.env`:
 
 ```env
 VITE_API_URL=http://localhost:4000/api
@@ -644,104 +608,86 @@ http://localhost:5173
 
 # Production Build
 
-From the frontend directory:
+From the project root:
 
 ```bash
 npm run build
 ```
 
-The production build is generated in:
+The frontend production build is generated in:
 
 ```text
 frontend/dist
 ```
 
-To preview the production build:
-
-```bash
-npm run preview
-```
+The Express backend serves the production frontend and API from the same Render service.
 
 ---
 
-# Deployment
+# Production Deployment
 
-The application can be deployed using services such as Render and Vercel.
-
-## PostgreSQL
-
-The production database can be hosted using:
-
-* Render PostgreSQL
-* Supabase
-* Neon
-* Another PostgreSQL provider
-
-The database connection string is configured using:
+The current application is deployed on **Render** as a single Web Service.
 
 ```text
-DATABASE_URL
+Browser
+   │
+   ▼
+Render Web Service
+   │
+   ├── React Frontend
+   │
+   └── Express REST API
+            │
+            ▼
+       PostgreSQL
 ```
 
----
-
-## Backend
-
-Deploy the Express backend as a Render Web Service.
-
-Backend environment variables:
+### Production URLs
 
 ```text
-DATABASE_URL=<production PostgreSQL connection string>
-PORT=<Render provided port>
-CORS_ORIGIN=<deployed frontend URL>
+Application:
+https://onefi-mobiles.onrender.com
+
+API:
+https://onefi-mobiles.onrender.com/api/products
+
+Health:
+https://onefi-mobiles.onrender.com/health
 ```
 
-Build command:
+### Render Build Command
 
 ```bash
-npm install && npm run prisma:generate
+npm install && npm run build
 ```
 
-Start command:
+### Render Start Command
 
 ```bash
-npm run prisma:deploy && npm start
+npm start
 ```
 
----
+The root `package.json` handles the frontend build and Prisma Client generation.
 
-## Frontend
-
-The Vite React frontend can be deployed using Vercel.
-
-Build command:
-
-```bash
-npm run build
-```
-
-Output directory:
+The Express server then serves:
 
 ```text
-dist
+frontend/dist
 ```
 
-Set:
+and exposes the API through:
 
-```env
-VITE_API_URL=<deployed backend API URL>/api
+```text
+/api
 ```
-
-The frontend contains a route rewrite configuration so that direct navigation and refreshes on product URLs continue to work.
 
 ---
 
 # GitHub Repository
 
-Source code:
+Repository:
 
-`https://github.com/sriharikante/1fi-assignment`
+https://github.com/sriharikante/1fi-assignment
 
 The repository contains:
 
@@ -750,10 +696,10 @@ The repository contains:
 * Prisma schema
 * Prisma migrations
 * Seed data
-* API implementation
-* README
+* REST API implementation
 * Product assets
 * Environment examples
+* README
 
 Sensitive environment files and generated dependencies are excluded using `.gitignore`.
 
@@ -761,18 +707,17 @@ Sensitive environment files and generated dependencies are excluded using `.giti
 
 # Testing Checklist
 
-Before submission, verify:
-
 * [x] Product catalog loads from backend API
 * [x] PostgreSQL database connected
 * [x] Prisma schema implemented
 * [x] Seed data implemented
-* [x] At least 3 products
+* [x] Four products available
 * [x] Multiple variants per product
 * [x] Unique product URLs
 * [x] Product image changes with variant
 * [x] Product price changes with variant
 * [x] EMI plans load dynamically
+* [x] EMI amount changes according to selected variant price
 * [x] EMI plan selection works
 * [x] Proceed button requires EMI selection
 * [x] Confirmation flow works
@@ -780,15 +725,15 @@ Before submission, verify:
 * [x] Error states implemented
 * [x] Product-not-found page implemented
 * [x] Responsive UI
-* [ ] Production deployment
-* [ ] Live demo URL added
-* [ ] Demo video added
+* [x] Production deployment
+* [x] Live demo URL added
+* [x] Demo video added
 
 ---
 
 # Future Improvements
 
-Possible improvements for a production version:
+Possible improvements for a production-ready marketplace:
 
 * User authentication
 * Customer EMI order history
@@ -796,8 +741,8 @@ Possible improvements for a production version:
 * Pagination
 * Real payment gateway integration
 * Admin product management
-* Automated API and frontend tests
-* Image storage using cloud object storage
+* Automated frontend and API tests
+* Cloud image storage
 * Order management
 * EMI eligibility checks
 * Production monitoring and logging
@@ -808,23 +753,32 @@ Possible improvements for a production version:
 
 ### GitHub Repository
 
-`https://github.com/sriharikante/1fi-assignment`
+https://github.com/sriharikante/1fi-assignment
 
 ### Deployed Demo
 
-`TODO — add URL after deployment`
+https://onefi-mobiles.onrender.com
 
 ### Demo Video
 
-`TODO — add Google Drive or YouTube URL after recording`
+*Add Google Drive or YouTube link here.*
 
-The demo video should showcase:
+The demo should showcase:
 
 1. Product listing
 2. Product details
 3. Variant selection
-4. EMI plan selection
-5. Confirmation flow
-6. Backend API
-7. PostgreSQL database
-8. Overall application functionality
+4. Price and EMI changes
+5. EMI plan selection
+6. Confirmation flow
+7. Backend API
+8. PostgreSQL database
+9. Overall application functionality
+
+---
+
+## Author
+
+**Srihari Kante**
+
+Built as part of the **1Fi SDE-1 Full-Stack Assignment**.
