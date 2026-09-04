@@ -10,16 +10,10 @@ All product, variant, pricing, and EMI plan information is loaded dynamically fr
 
 ## Live Demo
 
-**Application:**
-https://onefi-mobiles.onrender.com
-
-**Products API:**
-https://onefi-mobiles.onrender.com/api/products
-
-**Health Check:**
-https://onefi-mobiles.onrender.com/health
-
----
+- Application: https://onefi-mobiles.onrender.com
+- Products API: https://onefi-mobiles.onrender.com/api/products
+- Health Check: https://onefi-mobiles.onrender.com/health
+- Demo Video: https://drive.google.com/file/d/1vy5hxsEXfVzZp6FW2zttjCLRm7h6OqtK/view?usp=drivesdk
 
 ## Assignment Requirements
 
