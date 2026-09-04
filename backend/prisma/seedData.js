@@ -18,7 +18,7 @@ export const products = [
         price: 134900,
         stock: 25,
         imageUrl:
-          "/products/iphone-17-pro-natural-titanium.svg",
+          "/products/iphone-17-pro-natural-titanium.png",
       },
       {
         color: "Blue Titanium",
@@ -26,7 +26,7 @@ export const products = [
         price: 154900,
         stock: 15,
         imageUrl:
-          "/products/iphone-17-pro-blue-titanium.svg",
+          "/products/iphone-17-pro-blue-titanium.png",
       },
       {
         color: "Black Titanium",
@@ -34,7 +34,7 @@ export const products = [
         price: 174900,
         stock: 10,
         imageUrl:
-          "/products/iphone-17-pro-black-titanium.svg",
+          "/products/iphone-17-pro-black-titanium..png",
       },
     ],
     emiPlans: [
@@ -59,7 +59,7 @@ export const products = [
         price: 109999,
         stock: 30,
         imageUrl:
-          "/products/samsung-s24-ultra-titanium-gray.svg",
+          "/products/samsung-s24-ultra-titanium-gray.png",
       },
       {
         color: "Titanium Black",
@@ -67,7 +67,7 @@ export const products = [
         price: 124999,
         stock: 18,
         imageUrl:
-          "/products/samsung-s24-ultra-titanium-black.svg",
+          "/products/samsung-s24-ultra-titanium-black.png",
       },
       {
         color: "Titanium Violet",
@@ -75,7 +75,7 @@ export const products = [
         price: 149999,
         stock: 8,
         imageUrl:
-          "/products/samsung-s24-ultra-titanium-violet.svg",
+          "/products/samsung-s24-ultra-titanium-violet.png",
       },
     ],
     emiPlans: [
@@ -100,7 +100,7 @@ export const products = [
         price: 99999,
         stock: 22,
         imageUrl:
-          "/products/google-pixel-9-pro-obsidian.svg",
+          "/products/google-pixel-9-pro-obsidian.png",
       },
       {
         color: "Porcelain",
@@ -108,7 +108,7 @@ export const products = [
         price: 109999,
         stock: 20,
         imageUrl:
-          "/products/google-pixel-9-pro-porcelain.svg",
+          "/products/google-pixel-9-pro-porcelain.png",
       },
       {
         color: "Rose Quartz",
@@ -116,7 +116,7 @@ export const products = [
         price: 129999,
         stock: 9,
         imageUrl:
-          "/products/google-pixel-9-pro-rose-quartz.svg",
+          "/products/google-pixel-9-pro-rose-quartz.png",
       },
     ],
     emiPlans: [
@@ -141,7 +141,7 @@ export const products = [
         price: 69999,
         stock: 35,
         imageUrl:
-          "/products/oneplus-13-midnight-ocean.svg",
+          "/products/oneplus-13-midnight-ocean.png",
       },
       {
         color: "Arctic Dawn",
@@ -149,7 +149,7 @@ export const products = [
         price: 76999,
         stock: 24,
         imageUrl:
-          "/products/oneplus-13-arctic-dawn.svg",
+          "/products/oneplus-13-arctic-dawn.png",
       },
       {
         color: "Black Eclipse",
@@ -157,7 +157,7 @@ export const products = [
         price: 84999,
         stock: 12,
         imageUrl:
-          "/products/oneplus-13-black-eclipse.svg",
+          "/products/oneplus-13-black-eclipse.png",
       },
     ],
     emiPlans: [
