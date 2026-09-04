@@ -34,7 +34,7 @@ export const products = [
         price: 174900,
         stock: 10,
         imageUrl:
-          "/products/iphone-17-pro-black-titanium..png",
+          "/products/iphone-17-pro-black-titanium.png",
       },
     ],
     emiPlans: [
