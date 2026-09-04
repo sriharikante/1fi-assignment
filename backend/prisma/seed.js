@@ -2,6 +2,7 @@
 // Run with: npm run seed  (which runs `node prisma/seed.js`)
 // Safe to re-run: it clears existing rows before inserting fresh seed data.
 
+import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
 import { products } from "./seedData.js";
 
