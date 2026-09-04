@@ -752,7 +752,8 @@ https://onefi-mobiles.onrender.com
 
 ### Demo Video
 
-*Add Google Drive or YouTube link here.*
+https://drive.google.com/file/d/1vy5hxsEXfVzZp6FW2zttjCLRm7h6OqtK/view?usp=drivesdk
+
 
 The demo should showcase:
 
